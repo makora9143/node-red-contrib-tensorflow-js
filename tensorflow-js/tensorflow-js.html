@@ -1,0 +1,197 @@
+<!-- Node for tensorflow-js model -->
+<script type="text/x-red" data-template-name="predict">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-modelurl"><i class="icon-tag"></i>URL</label>
+    <input type="text" id="node-input-modelurl">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="predict">
+  <p>A predictor node implemented by tensorflow-js.</p>
+  <p>https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json</p>
+</script>
+
+<!-- Node for tensorflow-js trainer -->
+<script type="text/x-red" data-template-name="train">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-optimizer"><i class="icon-tag"></i>Optimizer</label>
+    <select id="node-input-optimizer">
+      <option value="sgd">SGD</option>
+      <option value="msgd">MomentumSGD</option>
+      <option value="rmsprop">RMSProp</option>
+      <option value="adam">Adam</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-lr"><i class="icon-tag"></i>Learning rate</label>
+    <input type="text" id="node-input-lr" placeholder="1e-2">
+  </div>
+  <div class="form-row">
+    <label for="node-input-batchsize"><i class="icon-tag"></i>BatchSize</label>
+    <input type="text" id="node-input-batchsize" placeholder="128">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="train">
+  <p>A train node for model by implemented by tensorflow-js.</p>
+</script>
+
+<!-- Node for tensorflow-js dataloader-->
+<script type="text/x-red" data-template-name="dataload">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-selecttest"><i class="icon-tag"></i> Name</label>
+    <select id="node-input-selecttest">
+      <option value="">ホゲホゲ</option>
+      <option value="">ファうdふあ</option>
+    </select>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="dataload">
+  <p>A dataloader for data.</p>
+  <p>Input: Buffer</p>
+  <p>Output: Canvas</p>
+</script>
+
+<!-- Node for Processing Image to Tensor-->
+<script type="text/x-red" data-template-name="img2tensor">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-sizew"><i class="icon-tag"></i>Size of W</label>
+    <input type="text" id="node-input-sizew" placeholder="224">
+  </div>
+  <div class="form-row">
+    <label for="node-input-sizeh"><i class="icon-tag"></i>Size of H</label>
+    <input type="text" id="node-input-sizeh" placeholder="224">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="img2tensor">
+  <p>A transform node from canvas to tensor.</p>
+  <p>Input: Canvas</p>
+  <p>Output: tf.tensor</p>
+</script>
+
+<!-- Node for Classlist-->
+<script type="text/x-red" data-template-name="classlabel">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-classfile"><i class="icon-tag"></i>JSON File</label>
+    <input type="file" id="node-input-classfile">
+    <input type='hidden' id="node-input-classdata">
+  <script id="hogehoge"></script>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="classlabel">
+<p>A Node for translating idx into classlabel.</p>
+</script>
+
+
+<!-- Add Node -->
+<script type="text/javascript">
+  RED.nodes.registerType('predict',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value:""},
+      modelurl: {value:"", required:true}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"predict";
+    }
+  });
+
+  RED.nodes.registerType('train',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value: ""},
+      lr: {value: "1e-2"},
+      batchsize: {value: "128"},
+      epochs: {value: "300"}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"train";
+    }
+  });
+
+  RED.nodes.registerType('dataload',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value:""},
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"dataload";
+    },
+  });
+
+  RED.nodes.registerType('img2tensor',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value:""},
+      sizew: {value:""},
+      sizeh:{value:""}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"img2tensor";
+    }
+  });
+
+  RED.nodes.registerType('classlabel',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value:""},
+      classdata: {value:""}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"classlabel";
+    },
+    oneditprepare: function() {
+      $("#node-input-classfile").change(function() {
+        const filename = this.files[0].name;
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          $("#node-input-classdata").val(event.target.result);
+        };
+        reader.readAsText(this.files[0]);
+        // reader.readAsDataURL(this.files[0]);
+      });
+    }
+  });
+</script>
