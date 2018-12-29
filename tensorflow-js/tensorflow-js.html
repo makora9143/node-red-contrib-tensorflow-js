@@ -86,8 +86,8 @@
   <p>Output: tf.tensor</p>
 </script>
 
-<!-- Node for Classlist-->
-<script type="text/x-red" data-template-name="classlabel">
+<!-- Node for Classify-->
+<script type="text/x-red" data-template-name="classify">
   <div class="form-row">
     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
@@ -96,14 +96,36 @@
     <label for="node-input-classfile"><i class="icon-tag"></i>JSON File</label>
     <input type="file" id="node-input-classfile">
     <input type='hidden' id="node-input-classdata">
-  <script id="hogehoge"></script>
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="classlabel">
-<p>A Node for translating idx into classlabel.</p>
+<script type="text/x-red" data-help-name="classify">
+<p>A Processing Node for classification.</p>
 </script>
 
+<!-- Node for Classlist-->
+<script type="text/x-red" data-template-name="dataset">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-dataseturl"><i class="icon-tag"></i>Dataset</label>
+    <input type="text" id="node-input-dataseturl">
+  </div>
+  <div class="form-row">
+    <label for="node-input-labelurl"><i class="icon-tag"></i>Dataset Label</label>
+    <input type="text" id="node-input-labelurl">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="dataset">
+<p>A MNIST Node.</p>
+  <p>MNIST_IMAGES_SPRITE_PATH =
+  'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';</p>
+  <p>MNIST_LABELS_PATH =
+  'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';</p>
+</script>
 
 <!-- Add Node -->
 <script type="text/javascript">
@@ -169,7 +191,7 @@
     }
   });
 
-  RED.nodes.registerType('classlabel',{
+  RED.nodes.registerType('classify',{
     category: 'tensorflow',
     color: '#DF742C',
     defaults: {
@@ -180,7 +202,7 @@
     outputs:1,
     icon: "logo.png",
     label: function() {
-      return this.name||"classlabel";
+      return this.name||"classify";
     },
     oneditprepare: function() {
       $("#node-input-classfile").change(function() {
@@ -192,6 +214,21 @@
         reader.readAsText(this.files[0]);
         // reader.readAsDataURL(this.files[0]);
       });
+    }
+  });
+  RED.nodes.registerType('dataset',{
+    category: 'tensorflow',
+    color: '#DF742C',
+    defaults: {
+      name: {value:""},
+      dataseturl: {value:""},
+      labelurl: {value:""},
+    },
+    inputs:1,
+    outputs:1,
+    icon: "logo.png",
+    label: function() {
+      return this.name||"dataset";
     }
   });
 </script>
